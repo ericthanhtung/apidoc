@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/', \App\Http\Livewire\Home\Index::class);
+    Route::get('/dashboard', \App\Http\Livewire\Dashboard\Index::class)->name('dashboard');
+    Route::get('/projects/{slug}', \App\Http\Livewire\Project\Index::class)->name('project.index');
+    Route::get('/project/create', \App\Http\Livewire\Project\Create::class)->name('project.create');
 });
